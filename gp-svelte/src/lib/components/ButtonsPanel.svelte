@@ -2,7 +2,7 @@
   import Button from "./Button.svelte";
   import { buttonMappings } from "../constants";
   import InputDeviceButton from "./InputDeviceButton.svelte";
-  import FullScreenButton from "./FullScreenButton.svelte";
+  import SettingsButton from "./Settings.svelte";
 </script>
 
 <div class="flex h-full w-full flex-col justify-between">
@@ -12,7 +12,7 @@
         <Button {...buttonProps} />
       {/each}
       <InputDeviceButton />
-      <FullScreenButton />
+      <SettingsButton />
     </div>
   </div>
 </div>
