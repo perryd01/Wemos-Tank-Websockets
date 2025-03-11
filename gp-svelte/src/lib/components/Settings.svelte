@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { userSettings } from "../stores/userSettings";
   import ButtonBase from "./ButtonBase.svelte";
   import Settings from "./icons/settings.svelte";
 
@@ -14,36 +15,49 @@
   let dialogRef = $state<HTMLDialogElement | null>(null);
   const active = $derived(dialogRef?.open ?? false);
 
-  const speed = $state(1);
+  let d = $state($userSettings.constants.d);
+  let limit = $state($userSettings.constants.limit);
+
+  $effect(() => {
+    $userSettings.constants.d = d;
+  });
+
+  $effect(() => {
+    $userSettings.constants.limit = limit;
+  });
 </script>
 
 <ButtonBase {active} {activeColor} {label} {handleClick} icon={Settings} />
 
 <dialog class="z-50" bind:this={dialogRef}>
   <div class="content">
-    <section>This is an open dialog window</section>
+    <header>This is an open dialog window</header>
+
     <section>
-      <div class="flex flex-col">
-        <label for="points">Speed restriction:</label>
-        <output for="points">{speed}</output>
-        <div class="flex flex-row w-full">
-          <span>max limit</span>
-          <input
-            class="w-full"
-            type="range"
-            id="points"
-            name="points"
-            min="0"
-            max="1"
-            step="0.1"
-          />
-          <span>no limit</span>
-        </div>
-      </div>
+      <span>d</span>
+      <input
+        min="0.1"
+        max="10"
+        step="0.1"
+        class="border-2 rounded-md"
+        type="number"
+        bind:value={d}
+      />
     </section>
+    <section>
+      <span>limit</span>
+      <input
+        min="0.1"
+        max="1"
+        step="0.1"
+        class="border-2 rounded-md"
+        type="number"
+        bind:value={limit}
+      />
+    </section>
+    <section></section>
 
     <footer>
-      <button>save</button>
       <button onclick={() => dialogRef?.close()}>close</button>
     </footer>
   </div>
@@ -52,6 +66,10 @@
 <style lang="postcss">
   dialog {
     @apply absolute top-0 left-0 rounded-lg z-[9999];
+  }
+
+  section {
+    @apply py-2;
   }
 
   .content {

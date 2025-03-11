@@ -2,6 +2,7 @@
   import { onMount } from "svelte";
   import { angularVelocityStore, speedStore } from "../stores/controller";
   import nipplejs from "nipplejs";
+  import { userSettings } from "../stores/userSettings";
 
   let joyRightValue = $state({ x: 0, y: 0 });
   let joyLeftValue = $state({ x: 0, y: 0 });
@@ -10,11 +11,21 @@
     v  =  (R + L) / 2
     w =  (R - L) / (2*d)
   */
-  const d = 1.5;
+  const d = $derived($userSettings.constants.d);
 
   let v = $derived({
-    v: Math.round(((joyRightValue.y + joyLeftValue.y) / 2) * 1000) / 1000,
-    w: Math.round(((joyRightValue.y - joyLeftValue.y) / (2 * d)) * 1000) / 1000,
+    v:
+      Math.round(
+        ((joyRightValue.y + joyLeftValue.y) / 2) *
+          1000 *
+          $userSettings.constants.limit
+      ) / 1000,
+    w:
+      Math.round(
+        ((joyRightValue.y - joyLeftValue.y) / (2 * d)) *
+          $userSettings.constants.limit *
+          1000
+      ) / 1000,
   });
 
   $effect(() => {

@@ -26,6 +26,7 @@
   },
   "type": "module",
   "dependencies": {
-    "nipplejs": "^0.10.2"
+    "nipplejs": "^0.10.2",
+    "svelte-persisted-store": "^0.12.0"
   }
 }
